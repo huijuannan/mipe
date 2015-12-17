@@ -46,29 +46,20 @@ def get_user_by_name(name):
         row = cur.fetchone()
     return row
 
-def get_subs(user_id):
-    '''由当前用户的 id 获取其订阅的所有 gitbook 书名和 url
-    返回一个字典的元组，无订阅时返回空元组
-    '''
-    con = db_conn()
-    with con:
-        cur = con.cursor(mdb.cursors.DictCursor)
-        cur.execute('''CREATE TABLE IF NOT EXISTS Subscribe(
-            User.id INTEGER, 
-            Book.id INTEGER, 
-            PRIMARY KEY (User.id, Book.id)''')
-        cur.execute("INSERT INTO Subscribe(ghName, email) VALUES(%s, %s)", 
-            (ghName, email))
+# 以下为 订阅数据处理部分，尚未完成
+#def get_subs(user_id):
+#    '''由当前用户的 id 获取其订阅的所有 gitbook 书名和 url
+#    返回一个字典的元组，无订阅时返回空元组
+#    '''
+#    con = db_conn()
+#    with con:
+#        cur = con.cursor(mdb.cursors.DictCursor)
+#        cur.execute('''CREATE TABLE IF NOT EXISTS Subscribe(
+#            User.id INTEGER, 
+#            Book.id INTEGER, 
+#            PRIMARY KEY (User.id, Book.id)''')
 
-def add_sub(sub, user_id):
-    '''新增一行 subscribe 数据'''
-    con = db_conn()
-    with con:
-        cur = con.cursor()
-        cur.execute("INSERT INTO Subscribe(ghName, email) VALUES(%s, %s)", 
-            (ghName, email))
-
+#def add_sub(sub, user_id):
+#    '''新增一行 subscribe 数据'''
 
 #def del_sub(sub, user_id):
-
-    

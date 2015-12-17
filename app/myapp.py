@@ -28,8 +28,8 @@ def manage_subs():
     if not g.user: 
         return redirect(url_for('login'))
     
-    subs = dbu.get_subs(session['user_id']) 
-    #subs = ['first gitbook', 'second gitbook', 'third gitbook'] #测试用
+    #subs = dbu.get_subs(session['user_id']) 
+    subs = ['first gitbook', 'second gitbook', 'third gitbook'] #测试用
 
     return render_template('subscriptions.html',subscriptions=subs)
 
@@ -40,7 +40,7 @@ def add_sub():
         abort(401)
     if request.form['new_sub']:
         new_sub = request.form['new_sub']
-        dbu.insert_sub(new_sub, session['user_id'])
+        #dbu.insert_sub(new_sub, session['user_id'])
     return redirect(url_for('manage_subs'))
 
 @app.route('/login', methods=['GET', 'POST'])
