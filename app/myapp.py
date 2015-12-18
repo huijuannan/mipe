@@ -52,6 +52,7 @@ def login():
     error = None
     allowed_users = ["zoomquiet", "liangpeili", "yangshaoshun", "hongzhih", "dyelaine", "yondjune", "JeremiahZhang", "whb1990111", "simple2source", "wp-lai", "shawn0lee0", "bingosummer", "Lcking", "Myself", "Wangqiaoyang", "faketooth", "sherlockhoatszx", "veratulips", "siyuany", "jasonycliu", "junjielizero", "janice-lu-zeng", "aJiea", "Cen74", "Langp618", "penguinjing", "ivanlau", "rayxiehui", "bambooom", "zoejane", "WhaleChen", "xiaoyuer", "jameszhou89", "picklecai", "scottming", "4plus-ma", "liangchaob", "xpgeng", "huijuannan", "tiezipy", "sunoonlee", "Awlter", "conn820", "lixiguangzhou", "jimmy0717", "chuxueyou", "fqlxxxxx", "Raffia", "chenyan423", "kristain630", "gezizouzou", "happylumia", "Sokratesjr", "wuxianliang", "xiangshan", "lk1879", "hysic", "jorylu", "Eloisechou1", "PursuitCane", "s32n", "tttv", "xiaopan918", "lifegao12345", "LishuaiBeijing", "liznut", "mqyqlx", "Perter1990", "peter1990", "lvjiu", "wo343096281", "hanbing718", "DoSolDo", "JQ-K", "luoquan19", "tian1718", "muzakkk", "theorem0108", "jane325", "angdali", "summer724", "andreachin", "arctic-snow", "CherHu", "wwshen", "ziz9", "jiaoqing", "tedxt", "csyuking1989", "haruhi99", "SunXiaoSheng", "imxdxd", "buermen", "AaronCopperfield", "Iris-Di", "YFantasy", "Sherrywangintj", "henryopenmind", "feilalala", "rusell123", "lotusofblue", "zhiyuanlife", "jinxiaochong", "zou23cn", "LIUJISHEN", "zhouqian3", "liangdl", "liya1704", "StoryTelr", "zengyumi", "hujianfei1989", "Inspirabbits", "xiangzhendong", "cxiaodian", "zjuguxi", "demonmax", "wayson1990", "William-Shen", "RichardSZ", "shuliw", "crazy-tea", "Jessicamiejiu", "Cloudtree11", "vickyzou", "OctoberEmma", "wong-github", "nicoleyesnicole", "Nicoleyesnicole", "leonpak", "linttutu", "snatching", "dougherty930", "mjy2", "suluren", "wzzlj", "ibrother", "jaspereclipse", "ddtnt", "demichen0824", "Demi", "doreenduo43", "iBarbabob", "mac-naxin", "zoewang91", "Ericmio", "Normanplus", "soul2867", "mazichen", "Acural", "baicaiby", "nightie", "langp618", "lethinkrong", "beelives", "cupid668", "wanderingdopamine", "lyltj2010", "mastertaochao", "dayuhomes", "xkuang", "kingking", "chcaravalle", "zhangyongyu", "meleslilijing", "zhuzuojun", "waldlecai", "Xiangfeiyin", "ouyangzhiping", "YixuanFranco", "cnfeat", "ishanshan", "ZoomQuiet", "chientung91", "Azeril", "cp4", "wwulfric", "csufuyi", "badboy315", "aa", "ss", "dd"]
     
+    login_succeed = False
     if request.method == 'POST':
         gh_name = request.form['gh_name']
         email = request.form['email']
@@ -63,16 +64,19 @@ def login():
             if gh_name in allowed_users:
                 dbu.insert_user(gh_name, email)
                 session['user_id'] = dbu.get_user_by_name(gh_name)['id']
-                return redirect(url_for('manage_subs'))
+                login_succeed = True
             else:
                 error = u'此 github 用户名暂无登录权限'
         else:
             if email == dbu.get_user_by_name(gh_name)['email']:
                 session['user_id'] = dbu.get_user_by_name(gh_name)['id']
-                return redirect(url_for('manage_subs'))
+                login_succeed = True
             else:
                 error = u'Email 与 github 用户名不匹配'
-    return render_template('login.html', error=error)
+    if login_succeed:
+    	return redirect(url_for('manage_subs'))
+    else:
+    	return render_template('login.html', error=error)
 
 @app.route('/logout')
 def logout():
