@@ -17,7 +17,7 @@
   <div class="panel-body">
     {% for sub in subscriptions %}
     <div>
-      <p>{{sub}}
+      <p><a href={{ sub.url }}> {{ sub.ghName }} - {{sub.name}} </a>
       <button class="btn btn-default btn-xs" type="button" style="float: right;">
         <em class="glyphicon glyphicon-remove"></em>
       </button><br>
