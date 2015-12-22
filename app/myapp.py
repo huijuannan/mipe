@@ -5,7 +5,7 @@ MIPE - web app
 
 采用 flask 框架
 """
-import re
+from urlparse import urlparse
 
 from flask import (Flask, request, redirect, render_template,
         session, url_for, g, flash, abort)
@@ -67,32 +67,46 @@ def add_sub():
     '''为当前用户增加一个订阅，录入作者、书目、订阅信息'''
     if 'user_id' not in session:
         abort(401)
+
     if request.form['new_sub']:
         url = request.form['new_sub']
+        if len(url) > 100:
+            flash(u'添加失败：url 地址过长！')
+            #is_url_valid = False
+            return redirect(url_for('home'))
+
+        #url 有效性检查, 格式：https://authorname.gitbooks.io/bookname/content/
+        url_scheme = urlparse(url).scheme # expected: 'https'
+        url_hostname = urlparse(url).hostname # expected: 'authorname.gitbooks.io'
+        url_path = urlparse(url).path # expected: '/bookname/content/'
         
-        #TODO: url 有效性检查及格式统一
-        #url 格式：https://authorname.gitbooks.io/xxx/content/
+        if url_scheme != 'https' or\
+                url_hostname.partition('.')[2] != 'gitbooks.io' or\
+                not url_path.endswith('/content/'):
 
-        search = re.search('//.+?\.', url)
-        author_name = search.group()[2:-1] if search else ''
+            flash(u'添加失败：url 地址不符合要求的格式！')
+            return redirect(url_for('home'))
 
-        #book_name = get_book_name(url) # @wp-lai
-        book_name = 'python 笔记'
+        else:
+            author_name = url_hostname.partition('.')[0]
+            book_name = url_path.split('/')[1]
+    
+            # 记录作者信息
+            g.db.execute("INSERT IGNORE INTO Author(ghName) VALUES(%s)", author_name)     
+            author_id = g.db.get("SELECT * from Author WHERE ghName=%s", author_name).id
+    
+            # 记录书目信息
+            g.db.execute("INSERT IGNORE INTO Book(url, name, author_id) VALUES(%s,%s,%s)", 
+                url, book_name, author_id)
+            book_id = g.db.get("SELECT * from Book WHERE url=%s", url).id
 
-        # 记录作者信息
-        g.db.execute("INSERT IGNORE INTO Author(ghName) VALUES(%s)", author_name)     
-        author_id = g.db.get("SELECT * from Author WHERE ghName=%s", author_name).id
-
-        # 记录书目信息
-        g.db.execute("INSERT IGNORE INTO Book(url, name, author_id) VALUES(%s,%s,%s)", 
-            url, book_name, author_id)
-        book_id = g.db.get("SELECT * from Book WHERE url=%s", url).id
-
-        # 记录订阅信息
-        g.db.execute("INSERT IGNORE INTO Subscribe(user_id, book_id) VALUES(%s,%s)", 
-            session['user_id'], book_id)
+            # 记录订阅信息
+            g.db.execute("INSERT IGNORE INTO Subscribe(user_id, book_id) VALUES(%s,%s)", 
+                session['user_id'], book_id)
+    
     return redirect(url_for('home'))
 
+        
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     '''供用户以 github 用户名和邮箱登录'''

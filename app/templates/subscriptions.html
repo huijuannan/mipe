@@ -2,12 +2,12 @@
 
 {% block content %}
 <div class="btn-group">
-
   <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">
     <em class="glyphicon glyphicon-plus"></em> 新增订阅
-  </button> 
+  </button>
   <br>
 </div>
+
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">
@@ -36,6 +36,7 @@
           <h4 class="modal-title" id="myModalLabel">新增订阅</h4>
         </div>
         <div class="modal-body">
+          <p>格式：https://*.gitbooks.io/*/content/</p>
           <form action="/add_sub" method="POST">
             <div class="form-group">
               <input type="text" class="form-control" name="new_sub">
