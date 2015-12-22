@@ -58,13 +58,17 @@ def home():
         AND Subscribe.user_id = %s
         ''', session['user_id']) 
     # subs 为字典构成的列表
-    # 字典的键：url, name(书名), ghName(作者的github用户名)
+    # 字典的键：'book_id', 'url', 'name'(书名), 'ghName'(作者的github用户名)
+    
+    for sub in subs:
+        sub['rmlink'] = '/remove_sub/'+str(sub['book_id'])
 
-    return render_template('subscriptions.html',subscriptions=subs)
+    return render_template('home.html',subscriptions=subs)
 
 @app.route('/add_sub', methods=['POST'])
 def add_sub():
     '''为当前用户增加一个订阅，录入作者、书目、订阅信息'''
+
     if 'user_id' not in session:
         abort(401)
 
@@ -92,7 +96,7 @@ def add_sub():
             book_name = url_path.split('/')[1]
     
             # 记录作者信息
-            g.db.execute("INSERT IGNORE INTO Author(ghName) VALUES(%s)", author_name)     
+            g.db.execute("INSERT IGNORE INTO Author(ghName) VALUES(%s)", author_name)
             author_id = g.db.get("SELECT * from Author WHERE ghName=%s", author_name).id
     
             # 记录书目信息
@@ -106,10 +110,23 @@ def add_sub():
     
     return redirect(url_for('home'))
 
-        
+@app.route('/remove_sub/<int:book_id>')
+def remove_sub(book_id):
+    '''为当前用户移除指定的订阅'''
+
+    if 'user_id' not in session:
+        abort(401)
+
+    g.db.execute('''DELETE FROM Subscribe
+                WHERE user_id = %s AND book_id = %s''', 
+                session['user_id'], book_id)
+
+    return redirect(url_for('home'))
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     '''供用户以 github 用户名和邮箱登录'''
+
     if g.user:
         return redirect(url_for('home'))
     
@@ -149,9 +166,9 @@ def login():
 @app.route('/logout')
 def logout():
     '''供当前用户退出登录'''
+    
     session.pop('user_id', None)
     return redirect(url_for('login'))
-
 
 if __name__ == '__main__':
     app.run()
