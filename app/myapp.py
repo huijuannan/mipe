@@ -29,7 +29,7 @@ def before_request():
     
     # 建立 MySQL 连接，参数：host:port, database, user, passwd
     # torndb 默认已将 charset 设为 utf-8
-    g.db = torndb.Connection("localhost:3306","mipetest", "root", "")
+    g.db = torndb.Connection("localhost:3306","mipe", "sunoonlee", "")
     
     g.user = None
     if 'user_id' in session:
