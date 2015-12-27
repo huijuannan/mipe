@@ -11,7 +11,7 @@ CREATE TABLE User(
 
 DROP TABLE IF EXISTS Author;
 CREATE TABLE Author (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT AUTO_INCREMENT,
     ghName VARCHAR(45) UNIQUE,
     PRIMARY KEY(id));
 
@@ -26,5 +26,5 @@ CREATE TABLE Book (
     id INT AUTO_INCREMENT,
     url VARCHAR(100) UNIQUE,
     name VARCHAR(45),
-    author_id INT),
+    author_id INT,
     PRIMARY KEY(id));

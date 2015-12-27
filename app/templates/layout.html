@@ -58,12 +58,10 @@
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
               <li>
-                <a href="#">关于</a>
+                <a href="/about">关于</a>
               </li>
               <li>
-              {% if g.user %}
-                <a href="/logout">退出</a>
-              {% else %}
+              {% if not g.user %}
                 <a href="/login">登录</a>
               {% endif %}
               </li>
