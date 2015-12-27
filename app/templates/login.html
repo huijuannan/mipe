@@ -2,7 +2,7 @@
 {% block title %} 登录 {% endblock %}
 
 {% block content %}
-  <form action="" method="post" class='form'>
+  <!--form action="" method="post" class='form'>
     <h4> 登录 </h4>
     <p> 请输入邮箱地址和github用户名 (无需注册)</p>
     {% if error %}<div class="error"><strong>Error:</strong> {{ error }}</div>{% endif %}
@@ -12,11 +12,10 @@
       <dt>邮箱地址:
       <dd><input type="email" name="email" size="30">
     </dl>
-    <!--button class="btn btn-primary" type="submit"> Sign in </button -->
     <div class="actions"><input type="submit" value="Sign In"></div> {{test}}
-  </form>
+  </form-->
   <div class="form-signin">
-    <p> <br>or </p>
-    <button class="btn btn-default" type="button"> Sign in with Github </button> (暂不可用)
+    <!--button class="btn btn-default" type="button"> Sign in with Github </button-->
+    <a href={{ url_for('github.login') }} class="btn btn-default" role="button"> Sign in with Github </a>
   </div>
 {% endblock %}

@@ -12,20 +12,19 @@ from flask import (Flask, request, redirect, render_template,
 from flask_dance.contrib.github import make_github_blueprint, github
 
 import torndb # A lightweight wrapper around MySQLdb
+import config
 
 # configuration
 SECRET_KEY = 'secretkey'
-CLIENT_ID = 'xxx'
-CLIENT_SECRET = 'xxx'
 
 # create application
 app = Flask(__name__)
 app.debug = True
 app.secret_key = SECRET_KEY
 blueprint = make_github_blueprint(
-    client_id=CLIENT_ID,
-    client_secret=CLIENT_SECRET,
-    scope='user:email'
+    client_id=config.OAUTH_CLIENT_ID,
+    client_secret=config.OAUTH_CLIENT_SECRET,
+    scope=u'user:email',
 )
 
 app.register_blueprint(blueprint, url_prefix="/login")
@@ -39,7 +38,12 @@ def before_request():
     
     # 建立 MySQL 连接，参数：host:port, database, user, passwd
     # torndb 默认已将 charset 设为 utf-8
-    g.db = torndb.Connection("localhost:3306","mipe", "sunoonlee", "")
+    g.db = torndb.Connection(
+        config.MYSQL_HOST,
+        config.MYSQL_DB,
+        config.MYSQL_USER,
+        config.MYSQL_PW
+        )
     
     g.user = None
 
@@ -68,7 +72,7 @@ def home():
     未登录时重定向到登录页面
     '''
     if not github.authorized: 
-        return redirect(url_for('github.login'))
+        return redirect(url_for('login'))
 
     subs = g.db.query(
         '''SELECT book_id, url, name, ghName 
@@ -143,17 +147,16 @@ def remove_sub(book_id):
 
     return redirect(url_for('home'))
 
-#@app.route('/login')
-#def login():
-#    '''提供github授权登录入口'''
-#   
-#    return render_template('login.html', error=error)
+@app.route('/login')
+def login():
+    '''提供github授权登录入口'''
+    return render_template('login.html')
 
-#@app.route('/logout')
-#def logout():
-#    '''供当前用户退出登录'''
-#
-#    return redirect(url_for('login'))
+@app.route('/about')
+def about():
+    '''应用简介页面'''
+    intro = 'MIPE introduction'
+    return render_template('about.html', content=intro)
 
 if __name__ == '__main__':
     app.run()
