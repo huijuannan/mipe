@@ -159,4 +159,4 @@ def about():
     return render_template('about.html', content=intro)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host=config.FLASK_APP_HOST)
