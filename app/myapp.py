@@ -152,6 +152,12 @@ def login():
     '''提供github授权登录入口'''
     return render_template('login.html')
 
+@app.route('/logout')
+def logout():
+    '''退出登录'''
+    g.user.github_token = None
+    return redirect(url_for('login'))
+
 @app.route('/about')
 def about():
     '''应用简介页面'''
