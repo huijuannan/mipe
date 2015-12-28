@@ -135,6 +135,7 @@ def add_sub():
             # 记录订阅信息
             g.db.execute("INSERT IGNORE INTO Subscribe(user_id, book_id) VALUES(%s,%s)", 
                 g.user.id, book_id)
+            flash(u'添加成功！')
     
     return redirect(url_for('home'))
 
@@ -148,7 +149,7 @@ def remove_sub(book_id):
     g.db.execute('''DELETE FROM Subscribe
                 WHERE user_id = %s AND book_id = %s''', 
                 g.user.id, book_id)
-
+    flash(u'您移除了一个订阅')
     return redirect(url_for('home'))
 
 @app.route('/login')

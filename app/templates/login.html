@@ -2,20 +2,7 @@
 {% block title %} 登录 {% endblock %}
 
 {% block content %}
-  <!--form action="" method="post" class='form'>
-    <h4> 登录 </h4>
-    <p> 请输入邮箱地址和github用户名 (无需注册)</p>
-    {% if error %}<div class="error"><strong>Error:</strong> {{ error }}</div>{% endif %}
-    <dl>
-      <dt>Github 用户名:
-      <dd><input type="text" name="gh_name" size="30">
-      <dt>邮箱地址:
-      <dd><input type="email" name="email" size="30">
-    </dl>
-    <div class="actions"><input type="submit" value="Sign In"></div> {{test}}
-  </form-->
   <div class="form-signin">
-    <!--button class="btn btn-default" type="button"> Sign in with Github </button-->
-    <a href={{ url_for('github.login') }} class="btn btn-default" role="button"> Sign in with Github </a>
+    <a href={{ url_for('github.login') }} class="btn btn-default" role="button"><img src="/static/Octocat.png" style="width:30px;height:25px;"> Sign in with Github </a>
   </div>
 {% endblock %}

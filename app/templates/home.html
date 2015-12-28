@@ -3,7 +3,7 @@
 {% block content %}
 <div class="btn-group">
   <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">
-    <em class="glyphicon glyphicon-plus"></em> 新增订阅
+    <em class="glyphicon glyphicon-plus"></em> 添加订阅
   </button>
   <br>
 </div>
@@ -17,8 +17,8 @@
   <div class="panel-body">
     {% for sub in subscriptions %}
     <div>
-      <p><a href={{ sub.url }}> {{ sub.ghName }} - {{sub.name}} </a>
-      <a href={{ sub.rmlink }} class="btn btn-default btn-xs" role="button" style="float: right;"><em class="glyphicon glyphicon-remove"></em></a> <br>
+      <p><a href={{ sub.url }} title="访问订阅链接"> {{ sub.ghName }}'s {{sub.name}} 教程</a>
+      <a href={{ sub.rmlink }} class="btn btn-default btn-xs" role="button" style="float: right;" title="移除这个订阅"><em class="glyphicon glyphicon-remove"></em></a> <br>
       </p>
     </div>
     {% endfor %}
