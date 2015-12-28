@@ -70,7 +70,9 @@ def close_connection(response):
 def home():
     '''显示用户订阅条目
     未登录时重定向到登录页面
-    '''
+    '''    
+    print_user_info('home')
+
     if not github.authorized: 
         return redirect(url_for('login'))
 
@@ -93,6 +95,7 @@ def home():
 def add_sub():
     '''为当前用户增加一个订阅，录入作者、书目、订阅信息'''
 
+    print_user_info('add sub')
     if not github.authorized:
         abort(401)
 
@@ -150,12 +153,17 @@ def remove_sub(book_id):
 @app.route('/login')
 def login():
     '''提供github授权登录入口'''
+    print_user_info('to log in')
     return render_template('login.html')
 
 @app.route('/logout')
 def logout():
     '''退出登录'''
-    g.user.github_token = None
+
+    print_user_info('before logout')
+    session.pop('github_oauth_token', None)
+    print_user_info('after logout')
+
     return redirect(url_for('login'))
 
 @app.route('/about')
@@ -163,6 +171,14 @@ def about():
     '''应用简介页面'''
     intro = 'MIPE introduction'
     return render_template('about.html', content=intro)
+
+def print_user_info(string):
+    '''调试过程中查看一些变量的值'''
+    print '\n--> %s' % string
+    print session
+    print github.authorized
+    print g.user
+    print '\n'
 
 if __name__ == '__main__':
     app.run(host=config.FLASK_APP_HOST)
