@@ -104,7 +104,6 @@ def add_sub():
         url = request.form['new_sub']
         if len(url) > 100:
             flash(u'添加失败：url 地址过长！')
-            #is_url_valid = False
             return redirect(url_for('home'))
 
         #url 有效性检查, 格式：https://authorname.gitbooks.io/bookname/content/
