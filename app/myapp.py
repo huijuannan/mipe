@@ -50,15 +50,16 @@ def before_request():
     if github.authorized:
         gh_name = github.get("/user").json()['login']
 
-        existing_user = g.db.get("SELECT * FROM User where ghName=%s", gh_name)
+        find_user = g.db.get("SELECT * FROM User where ghName=%s", gh_name)
 
-        if existing_user == None:
+        if find_user == None:
+            # 获取用户邮箱，需要用户在 github 的 profile 设置里把邮箱设为公开可见
             email = github.get("/user").json()['email']
+
             g.db.insert("INSERT INTO User (ghName, email) VALUES (%s, %s)", 
                 gh_name, email)
 
-        g.user = g.db.get("SELECT * FROM User where ghName=%s", 
-                        gh_name)
+        g.user = g.db.get("SELECT * FROM User where ghName=%s", gh_name)
         
 @app.after_request
 def close_connection(response):
@@ -71,7 +72,7 @@ def home():
     '''显示用户订阅条目
     未登录时重定向到登录页面
     '''    
-    print_user_info('home')
+    print_variables('home')
 
     if not github.authorized: 
         return redirect(url_for('login'))
@@ -95,7 +96,7 @@ def home():
 def add_sub():
     '''为当前用户增加一个订阅，录入作者、书目、订阅信息'''
 
-    print_user_info('add sub')
+    print_variables('add sub')
     if not github.authorized:
         abort(401)
 
@@ -153,16 +154,16 @@ def remove_sub(book_id):
 @app.route('/login')
 def login():
     '''提供github授权登录入口'''
-    print_user_info('to log in')
+    print_variables('to log in')
     return render_template('login.html')
 
 @app.route('/logout')
 def logout():
     '''退出登录'''
 
-    print_user_info('before logout')
+    print_variables('before logout')
     session.pop('github_oauth_token', None)
-    print_user_info('after logout')
+    print_variables('after logout')
 
     return redirect(url_for('login'))
 
@@ -172,13 +173,12 @@ def about():
     intro = 'MIPE introduction'
     return render_template('about.html', content=intro)
 
-def print_user_info(string):
-    '''调试过程中查看一些变量的值'''
-    print '\n--> %s' % string
-    print session
-    print github.authorized
-    print g.user
-    print '\n'
+def print_variables(head):
+    '''调试过程中打印一些变量的值'''
+    print '\n### %s' % head
+    print 'session = %s' % session
+    print 'github.authorized = %s' % github.authorized
+    print 'g.user = %s\n' % g.user
 
 if __name__ == '__main__':
     app.run(host=config.FLASK_APP_HOST)
