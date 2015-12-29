@@ -101,7 +101,7 @@ def add_sub():
         abort(401)
 
     if request.form['new_sub']:
-        url = request.form['new_sub']
+        url = request.form['new_sub'].strip().lower()
         if len(url) > 100:
             flash(u'添加失败：url 地址过长！')
             return redirect(url_for('home'))
