@@ -170,8 +170,7 @@ def logout():
 @app.route('/about')
 def about():
     '''应用简介页面'''
-    intro = 'MIPE introduction'
-    return render_template('about.html', content=intro)
+    return render_template('about.html')
 
 def print_variables(head):
     '''调试过程中打印一些变量的值'''
