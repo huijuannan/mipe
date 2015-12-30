@@ -115,7 +115,7 @@ def add_sub():
                 url_hostname.partition('.')[2] != 'gitbooks.io' or\
                 not url_path.endswith('/content/'):
 
-            flash(u'添加失败：url 地址不符合要求的格式！')
+            flash(u'添加失败：url 格式不合要求！')
             return redirect(url_for('home'))
 
         else:
@@ -170,8 +170,7 @@ def logout():
 @app.route('/about')
 def about():
     '''应用简介页面'''
-    intro = 'MIPE introduction'
-    return render_template('about.html', content=intro)
+    return render_template('about.html')
 
 def print_variables(head):
     '''调试过程中打印一些变量的值'''
