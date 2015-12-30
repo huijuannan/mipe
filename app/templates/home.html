@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="btn-group">
+  <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">
+    <em class="glyphicon glyphicon-plus"></em> 添加订阅
+  </button>
+  <br>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      我的订阅
+    </h3>
+  </div>
+  <div class="panel-body">
+    {% for sub in subscriptions %}
+    <div>
+      <p><a href={{ sub.url }} title="访问订阅链接"> {{ sub.ghName }}'s {{sub.name}} 教程</a>
+      <a href={{ sub.rmlink }} class="btn btn-default btn-xs" role="button" style="float: right;" title="移除这个订阅">
+        <em class="glyphicon glyphicon-remove"></em>
+      </a><br>
+      </p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="myModalLabel">添加订阅</h4>
+        </div>
+        <div class="modal-body">
+          <p>格式：https://*.gitbooks.io/*/content/</p>
+          <form action="/add_sub" method="POST">
+            <div class="form-group">
+              <input type="text" class="form-control" name="new_sub">
+            </div>
+            <button class="btn btn-primary" type="submit">提交</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#list"> 学员教程不完全列表 </button>
+            <div id="list" class="collapse" style="font-size:13px;">
+              <br>
+              <div>https://<span style="color:#CC6600">wp-lai</span>.gitbooks.io/learn-python/content/</div>
+              <div>https://<span style="color:#CC6600">shawn0lee0</span>.gitbooks.io/python-omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">JeremiahZhang</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">bambooom</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">huijuannan</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">cxiaodian</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">hysic</span>.gitbooks.io/hysic-s-python-journey/content/</div>
+              <div>https://<span style="color:#CC6600">wzzlj</span>.gitbooks.io/wzzljomooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">liznut</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">xpgeng</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">zoejane</span>.gitbooks.io/zoe-py-tutorial/content/</div>
+              <div>https://<span style="color:#CC6600">wong-github</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">fqlxxxxx</span>.gitbooks.io/learnpython/content/</div>
+              <div>https://<span style="color:#CC6600">jasonycliu</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">sunoonlee</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">liangpeili</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">awlter</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">penguinjing</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">wwshen</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">veratulips</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">jasonycliu</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">awlter</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">suluren</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">storytelr</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">doreenduo43</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">cherhu</span>.gitbooks.io/gopython/content/</div>
+              <div>https://<span style="color:#CC6600">iris-di</span>.gitbooks.io/omooc2py/content/</div>
+              <div>https://<span style="color:#CC6600">zengyumi</span>.gitbooks.io/omooc2py/content/</div>
+              <br>以上为芝麻星排行榜中的全部有效教程链接，更多链接请查阅 <a href="https://github.com/OpenMindClub/OMOOC2py/issues/11">学员索引</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
