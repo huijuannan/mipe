@@ -1,29 +1,39 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="btn-group">
-  <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">
-    <em class="glyphicon glyphicon-plus"></em> 添加订阅
-  </button>
-  <br>
-</div>
-
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      我的订阅
-    </h3>
-  </div>
-  <div class="panel-body">
-    {% for sub in subscriptions %}
-    <div>
-      <p><a href={{ sub.url }} title="访问订阅链接"> {{ sub.ghName }}'s {{sub.name}} 教程</a>
-      <a href={{ sub.rmlink }} class="btn btn-default btn-xs" role="button" style="float: right;" title="移除这个订阅">
-        <em class="glyphicon glyphicon-remove"></em>
-      </a><br>
-      </p>
+<div class='subs'>
+  <div class="panel panel-default panel-transparent">
+    <div class="panel-heading">
+      <h2 class="panel-title">我的订阅</h2>
     </div>
-    {% endfor %}
+    <div class="panel-body">
+      {% for sub in subscriptions %}
+      <div>
+        <p><a href={{ sub.url }} title="访问订阅链接"> {{ sub.ghName }}'s {{sub.name}} 教程</a>
+          <a href={{ sub.rmlink }} class="btn btn-default btn-xs" role="button" style="float: right;" title="移除这个订阅"> X 
+            <!--em class="glyphicon glyphicon-remove"></em-->
+          </a><br>
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="btn-group">
+    <button class="btn btn-default btn-lg" type="button" data-toggle="modal" data-target="#myModal">
+      <!--em class="glyphicon glyphicon-plus" style="font-size: 1.2em;"></em-->
+      + 添加订阅
+    </button> 
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <span class=flashes>
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+      </span>
+    {% endif %}
+  {% endwith %}
+
   </div>
 </div>
 

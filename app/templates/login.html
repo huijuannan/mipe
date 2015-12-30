@@ -2,7 +2,11 @@
 {% block title %} 登录 {% endblock %}
 
 {% block content %}
-  <div class="form-signin">
-    <a href={{ url_for('github.login') }} class="btn btn-default" role="button"><img src="/static/Octocat.png" style="width:30px;height:25px;"> Sign in with Github </a>
-  </div>
+<div class="inner cover">
+  <h1 class="cover-heading"> M I P E </h1>
+  <p class="lead"> 为你监控感兴趣的 Gitbook 动态 </p>
+  <p class="lead">
+    <a href={{ url_for('github.login') }} class="btn btn-lg btn-default" role="button"><img src="../static/img/Octocat.png" style="width:30px;height:25px;">用 Github 账户登录</a>
+  </p>
+</div>
 {% endblock %}
