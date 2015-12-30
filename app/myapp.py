@@ -115,7 +115,7 @@ def add_sub():
                 url_hostname.partition('.')[2] != 'gitbooks.io' or\
                 not url_path.endswith('/content/'):
 
-            flash(u'添加失败：url 地址不符合要求的格式！')
+            flash(u'添加失败：url 格式不合要求！')
             return redirect(url_for('home'))
 
         else:
